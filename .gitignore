@@ -1,0 +1,35 @@
+# Ignore password files
+password.txt
+
+# Ignore all files in a specific directory
+secrets/
+
+# Ignore all .log files
+*.log
+
+# Node.js dependencies
+node_modules/
+
+# OS or Editor-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Environment variables file (if you use one, e.g., .env)
+.env
+
+# Compiled binary addons (if used)
+/build/Release
+
+# User-specific files
+.npmrc
+.npmignore
+.eslintcache
+
+# IDE or text editor configuration
+.idea/
+.vscode/
+*.swp
+
