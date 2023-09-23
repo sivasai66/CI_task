@@ -1,36 +1,56 @@
 const http = require('http');
-const assert = require('chai').assert;
+const chai = require('chai');
+const expect = chai.expect;
 
-const app = require('./app'); // Import your app.js file
+// Import your app.js file
+const app = require('./app');
 
-describe('App', function () {
+// Describe the test suite
+describe('App.js', () => {
     let server;
 
-    // Before running the tests, start the HTTP server
-    before(function () {
-        server = http.createServer(app).listen(3000); // Assuming your app runs on port 3000
+    before(() => {
+        // Start the server before running tests
+        server = app.server;
     });
 
-    // After all tests, close the server
-    after(function () {
-        server.close();
+    after(() => {
+        // Close the server after running tests
+        app.close();
     });
 
-    it('should return "Hello, Jenkins CI/CD!"', function (done) {
-        // Send a request to the server
-        http.get('http://localhost:3000', function (response) {
+    // Test case for checking if the server is running
+    it('should start the server', (done) => {
+        const PORT = process.env.PORT || 3000;
+
+        // Make a request to the server
+        http.get(`http://localhost:${PORT}`, (res) => {
+            // Check if the response status code is 200
+            expect(res.statusCode).to.equal(200);
+
+            // Read the response data
             let data = '';
-
-            // Collect the response data
-            response.on('data', function (chunk) {
+            res.on('data', (chunk) => {
                 data += chunk;
             });
 
-            // Check the response
-            response.on('end', function () {
-                assert.strictEqual(data, 'Hello, Jenkins CI/CD!\n');
+            // Check the response data
+            res.on('end', () => {
+                expect(data).to.equal('Hello, Jenkins CI/CD!\n');
                 done();
             });
+        });
+    });
+
+    // Test case for checking a non-existent route
+    it('should return 404 for a non-existent route', (done) => {
+        const PORT = process.env.PORT || 3000;
+
+        // Make a request to a non-existent route
+        http.get(`http://localhost:${PORT}/nonexistent`, (res) => {
+            // Check if the response status code is 404
+            expect(res.statusCode).to.equal(404);
+            done();
         });
     });
 });
