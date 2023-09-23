@@ -1,14 +1,13 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+// index.js
+const http = require('http');
 
-// Define a route that sends the "Welcome" message
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome!!!</h1>');
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello, Jenkins CI/CD!\n');
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
